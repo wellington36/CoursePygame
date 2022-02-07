@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 # Initialize the pygame
@@ -17,12 +18,22 @@ pygame.display.set_icon(icon)
 # Player
 playerimg = pygame.image.load('spaceship.png')
 playerX = 370
-playerY = 480
+playerY = 500
 playerX_change = 0
+
+# Enemy
+enemyimg = pygame.image.load('enemy.png')
+enemyX = random.randint(0, 800)
+enemyY = random.randint(50, 150)
+enemyX_change = 0
 
 
 def player(x, y):
     screen.blit(playerimg, (x, y))
+
+def enemy(x, y):
+    screen.blit(enemyimg, (x, y))
+
 
 # Game Loop
 running = True
@@ -33,7 +44,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        # keystroke check
+        # keystroke
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 playerX_change = - 0.3
@@ -45,5 +56,11 @@ while running:
 
     playerX += playerX_change
 
+    if playerX <= 0:
+        playerX = 0
+    elif playerX >= 736:
+        playerX = 736
+
     player(playerX, playerY)
+    enemy(enemyX, enemyY)
     pygame.display.update()
