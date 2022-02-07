@@ -1,12 +1,15 @@
+from webbrowser import BackgroundBrowser
 import pygame
 import random
-
 
 # Initialize the pygame
 pygame.init()
 
 # Create the screen
 screen = pygame.display.set_mode((800, 600))
+
+# Background
+background = pygame.image.load("background.jpg")
 
 # Title and icon
 icon = pygame.image.load('ufo.png')
@@ -25,7 +28,7 @@ playerX_change = 0
 enemyimg = pygame.image.load('enemy.png')
 enemyX = random.randint(0, 736)
 enemyY = random.randint(50, 150)
-enemyX_change = 0.3
+enemyX_change = 0.8
 enemyY_change = 64
 
 
@@ -41,6 +44,10 @@ running = True
 while running:
     screen.fill((0, 0, 0))
 
+    # Background image
+    screen.blit(pygame.transform.scale(background, (800, 600)), (0, 0))
+    
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -48,9 +55,9 @@ while running:
         # keystroke
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                playerX_change = - 0.3
+                playerX_change = - 0.8
             if event.key == pygame.K_RIGHT:
-                playerX_change = 0.3
+                playerX_change = 0.8
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 print("Keystoke has been released")
@@ -66,10 +73,10 @@ while running:
     enemyX += enemyX_change
 
     if enemyX <= 0:
-        enemyX_change = 0.3
+        enemyX_change = 0.8
         enemyY += enemyY_change
     elif enemyX >= 736:
-        enemyX_change = -0.3
+        enemyX_change = -0.8
         enemyY += enemyY_change
 
     player(playerX, playerY)
