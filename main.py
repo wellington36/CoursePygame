@@ -28,8 +28,16 @@ playerX_change = 0
 enemyimg = pygame.image.load('enemy.png')
 enemyX = random.randint(0, 736)
 enemyY = random.randint(50, 150)
-enemyX_change = 0.8
+enemyX_change = 0.6
 enemyY_change = 64
+
+# Bullet
+bulletimg = pygame.image.load('bullet.png')
+bulletX = 370
+bulletY = 500
+bulletX_change = 0
+bulletY_change = 10
+bullet_state = "ready"
 
 
 def player(x, y):
@@ -37,6 +45,12 @@ def player(x, y):
 
 def enemy(x, y):
     screen.blit(enemyimg, (x, y))
+
+def fire_bullet(x, y):
+    global bullet_state
+
+    bullet_state = "fire"
+    screen.blit(bulletimg, (x + 16, y + 10))
 
 
 # Game Loop
@@ -55,9 +69,12 @@ while running:
         # keystroke
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                playerX_change = - 0.8
+                playerX_change = - 0.6
             if event.key == pygame.K_RIGHT:
-                playerX_change = 0.8
+                playerX_change = 0.6
+            if event.key == pygame.K_SPACE:
+                fire_bullet(bulletX, bulletY)
+
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 print("Keystoke has been released")
@@ -73,12 +90,20 @@ while running:
     enemyX += enemyX_change
 
     if enemyX <= 0:
-        enemyX_change = 0.8
+        enemyX_change = 0.6
         enemyY += enemyY_change
     elif enemyX >= 736:
-        enemyX_change = -0.8
+        enemyX_change = -0.6
         enemyY += enemyY_change
+
+    # Bullet moviment
+    if bullet_state is "fire":
+        fire_bullet(playerX, bulletY)
+        bulletY -= bulletY_change
+
+
 
     player(playerX, playerY)
     enemy(enemyX, enemyY)
+
     pygame.display.update()
