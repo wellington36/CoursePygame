@@ -1,6 +1,6 @@
-from webbrowser import BackgroundBrowser
 import pygame
 import random
+import math
 
 # Initialize the pygame
 pygame.init()
@@ -39,6 +39,8 @@ bulletX_change = 0
 bulletY_change = 2
 bullet_state = "ready"
 
+score = 0
+
 
 def player(x, y):
     screen.blit(playerimg, (x, y))
@@ -51,6 +53,14 @@ def fire_bullet(x, y):
 
     bullet_state = "fire"
     screen.blit(bulletimg, (x + 16, y + 10))
+
+def is_collision(enemyX, enemyY, bulletX, bulletY) -> bool:
+    distance = math.sqrt(math.pow(enemyX - bulletX, 2) +
+                         math.pow(enemyY - bulletY, 2))
+    if distance < 27:
+        return True
+    else:
+        return
 
 
 # Game Loop
@@ -107,6 +117,14 @@ while running:
         fire_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
 
+    # Collision
+    collision = is_collision(enemyX, enemyY, bulletX, bulletY)
+    if collision:
+        bulletY = playerY
+        bulletX = playerX
+        bullet_state = "ready"
+        score += 1
+        print(score)
 
 
     player(playerX, playerY)
