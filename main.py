@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from pygame import mixer
 
 # Initialize the pygame
 pygame.init()
@@ -10,6 +11,10 @@ screen = pygame.display.set_mode((800, 600))
 
 # Background
 background = pygame.image.load("background.jpg")
+
+# Backgroung sound
+mixer.music.load('background.wav')
+mixer.music.play(-1)
 
 # Title and icon
 icon = pygame.image.load('ufo.png')
@@ -100,6 +105,9 @@ while running:
             if event.key == pygame.K_RIGHT:
                 playerX_change = 0.6
             if event.key == pygame.K_SPACE and bullet_state is "ready":
+                bullet_sound = mixer.Sound('laser.wav')
+                bullet_sound.play()
+
                 bulletX = playerX
                 fire_bullet(bulletX, bulletY)
 
@@ -129,6 +137,9 @@ while running:
         # Collision
         collision = is_collision(enemyX[i], enemyY[i], bulletX, bulletY)
         if collision:
+            explosion_sound = mixer.Sound('explosion.wav')
+            explosion_sound.play()
+
             bulletY = playerY
             bulletX = playerX
             bullet_state = "ready"
@@ -151,5 +162,5 @@ while running:
 
     player(playerX, playerY)
     show_score(textX, textY)
-    
+
     pygame.display.update()
