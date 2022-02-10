@@ -113,7 +113,7 @@ while running:
         bulletX = playerX
         bullet_state = "ready"
 
-    if bullet_state is "fire":
+    if bullet_state == "fire":
         fire_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
 
@@ -125,6 +125,8 @@ while running:
         bullet_state = "ready"
         score += 1
         print(score)
+        enemyX = random.randint(0, 736)
+        enemyY = random.randint(50, 150)
 
 
     player(playerX, playerY)
